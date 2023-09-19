@@ -11,6 +11,11 @@
     "build": "tsc",
     "local": "npm run build && cross-env NODE_ENV=development node dist/src/server.js"
   },
+  "lint-staged": {
+    "./src/**/*.{ts,tsx,js,jsx}": [
+      "eslint --fix"
+    ]
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -19,11 +24,7 @@
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
     "eslint": "^8.49.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-prettier": "^5.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
