@@ -23,6 +23,6 @@ ENV NODE_ENV=production \
  DATABASE_NAME=$DATABASE_NAME \
  LOG_PATH=$LOG_PATH
 
-EXPOSE 8080
+EXPOSE 8000
 
 CMD ["node", "dist/src/server.js"]
