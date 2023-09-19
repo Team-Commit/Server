@@ -8,6 +8,7 @@ dotenv.config();
 const app = express();
 
 const mongo = Mongo.getInstance();
+
 app.use(
 	cors({
 		origin: true,
@@ -30,6 +31,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
 	res.json('Server working');
+});
+
+app.get('/test', (req: Request, res: Response, next: NextFunction) => {
+	res.json({ data: 'ok' });
 });
 
 export { app };
