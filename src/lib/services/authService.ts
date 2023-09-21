@@ -1,18 +1,14 @@
 import jwt from 'jsonwebtoken';
 import SignInDto from '../../types/requestTypes/signIn.dto';
 import { UserModel } from '../../database/models/user';
-
 import UserService from './userService';
 
 class AuthService {
   private static instance: AuthService;
 
-  authService: AuthService;
-
   userService: UserService;
 
   private constructor() {
-    this.authService = AuthService.getInstance();
     this.userService = UserService.getInstance();
   }
 
