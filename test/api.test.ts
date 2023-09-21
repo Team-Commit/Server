@@ -30,7 +30,30 @@ describe('API Test', () => {
 				deviceId: 'test_deviceId',
 			});
 
-			accessToken = response.body.data;
+			accessToken = response.body.data.accessToken;
+		});
+	});
+
+	describe('USER API TEST', () => {
+		test('[PATCH] /v1/users/me', async () => {
+			await request(app)
+				.patch('/v1/users/me')
+				.set('Authorization', `Bearer ${accessToken}`)
+				.send({
+					nickname: 'change nickname',
+					sound: false,
+					alarm: false,
+				})
+				.expect({
+					data: {
+						nickname: 'change nickname',
+						point: 3,
+						send: 0,
+						receive: 0,
+						sound: false,
+						alarm: false,
+					},
+				});
 		});
 	});
 

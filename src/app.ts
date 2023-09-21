@@ -7,6 +7,7 @@ import path from 'path';
 import YAML from 'yamljs';
 import Mongo from './util/mongo';
 import v1AuthRouter from './lib/controllers/authController';
+import v1UserRouter from './lib/controllers/userController';
 import v1LetterRouter from './lib/controllers/letterController';
 import { NotFoundError } from './lib/middelwares/error/error';
 import { errorHandler } from './lib/middelwares/error/errorHandler';
@@ -64,6 +65,7 @@ app.use(
 );
 
 app.use('/v1', v1AuthRouter);
+app.use('/v1', v1UserRouter);
 app.use('/v1', v1LetterRouter);
 
 // 404 page not found
