@@ -2,7 +2,6 @@ import {
   Router, Request, Response, NextFunction,
 } from 'express';
 import { validateOrReject } from 'class-validator';
-import LetterService from '../services/letterService';
 import AuthService from '../services/authService';
 import SignInDto from '../../types/requestTypes/signIn.dto';
 
@@ -12,7 +11,7 @@ const authService = AuthService.getInstance();
 
 // 회원가압
 router.post(
-  '/sign-in',
+  '/auth/sign-in',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const signInDto = new SignInDto(req.body);

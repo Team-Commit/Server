@@ -3,6 +3,10 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
 import Mongo from './util/mongo';
+import v1AuthRouter from './lib/controllers/authController';
+import v1LetterRouter from './lib/controllers/letterController';
+import { NotFoundError } from './lib/middelwares/error/error';
+import { errorHandler } from './lib/middelwares/error/errorHandler';
 
 dotenv.config();
 
@@ -34,6 +38,13 @@ app.get('/', (req: Request, res: Response, next: NextFunction) => {
   res.json('Server working');
 });
 
-app.get('/test', (req: Request, res: Response, next: NextFunction) => res.json({ data: 'ok' }));
+app.use('/v1', v1AuthRouter);
+app.use('/v1', v1LetterRouter);
+
+// 404 page not found
+app.use((req: Request, res: Response) => {
+  throw new NotFoundError();
+});
+app.use(errorHandler);
 
 export { app };

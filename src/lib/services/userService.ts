@@ -4,11 +4,7 @@ import { UserModel } from '../../database/models/user';
 class UserService {
   private static instance: UserService;
 
-  userService: UserService;
-
-  private constructor() {
-    this.userService = UserService.getInstance();
-  }
+  private constructor() {}
 
   async createUser(deviceId: string): Promise<string> {
     const uuid = v4();
@@ -17,7 +13,7 @@ class UserService {
       uuid: uuid,
       deviceId: deviceId,
       point: 3,
-    });
+    }).save();
 
     return uuid;
   }

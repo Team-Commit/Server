@@ -2,13 +2,8 @@ import { IsString, MaxLength, MinLength } from 'class-validator';
 import { CreateLetterForm } from '../types';
 
 class CreateLetterDto {
-  @MinLength(10, {
-    message: 'Letter is too short',
-  })
-  @MaxLength(30, {
-    message: 'Letter is too long',
-  })
-  @IsString()
+  @MinLength(10)
+  @MaxLength(200)
     content: string;
 
   constructor(obj: CreateLetterDto) {
