@@ -19,13 +19,13 @@ const errorHandler = (
     if (constraint) {
       if (constraint.hasOwnProperty('minLength')) {
         res.status(400).send({
-          message: 'message too short!',
+          message: 'BAD_REQUEST',
           code: errorCode.LETTER_TOO_SHORT,
           errors: 'message too short!',
         });
       } else if (constraint.hasOwnProperty('maxLength')) {
         res.status(400).send({
-          message: 'message too long!',
+          message: 'BAD_REQUEST',
           code: errorCode.LETTER_TOO_LONG,
           errors: 'message too long!',
         });

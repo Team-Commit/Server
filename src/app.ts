@@ -39,7 +39,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 (async () => {
-  await mongo.connect();
+  if (process.env.NODE_ENV !== 'test') {
+    await mongo.connect();
+  }
 })();
 
 app.use((req: Request, res: Response, next: NextFunction) => {
