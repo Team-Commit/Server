@@ -1,0 +1,144 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: 무인도 API DOCS
+  description: 무인도 backend api 문서
+  contact:
+    email: gkqkehs0321@gmail.com
+tags:
+  - name: AuthController
+    description: 인증 관련 api
+  - name: UserController
+    description: 유저 관련 api
+  - name: LetterController
+    description: 가게 관련 api
+paths:
+  /v1/auth/sign-in:
+    post:
+      tags:
+        - AuthController
+      summary: 회원가입 및 로그인
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - deviceId
+              properties:
+                deviceId:
+                  type: string
+                  description: 기기 고유 Id
+                  example: aweofiawe-23
+      responses:
+        '200':
+          description: 로그인 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    description: accessToken
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6Ijc0M2Y0ZjJhLTA2NmMtNGE1ZS1hMGI2LWUyZjBjMzIxNDEyNSIsImlhdCI6MTY5NTI2NTk0MX0.aEHb1pbcn6_V-j5Wg0X62ZjlvqWQXP5ThvcYxAxnTRo
+  /v1/letters:
+    post:
+      tags:
+        - LetterController
+      summary: 편지 작성 하기
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+            example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6Ijc0M2Y0ZjJhLTA2NmMtNGE1ZS1hMGI2LWUyZjBjMzIxNDEyNSIsImlhdCI6MTY5NTI2NTk0MX0.aEHb1pbcn6_V-j5Wg0X62ZjlvqWQXP5ThvcYxAxnTRo
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+              properties:
+                content:
+                  type: string
+                  description: 편지 내용 (최소 10글자 최대 200글자)
+                  example: 오늘 하루도 힘내세요!!
+      responses:
+        '200':
+          description: 편지 작성 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: boolean
+                    description: 편지 작성 성공
+                    example: true
+  /v1/letters/{letterUUID}:
+    get:
+      tags:
+        - LetterController
+      summary: 특정 편지 읽기
+      parameters:
+        - in: header
+          name: Authorization
+          description: accessToken
+          required: true
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6Ijc0M2Y0ZjJhLTA2NmMtNGE1ZS1hMGI2LWUyZjBjMzIxNDEyNSIsImlhdCI6MTY5NTI2NTk0MX0.aEHb1pbcn6_V-j5Wg0X62ZjlvqWQXP5ThvcYxAxnTRo
+        - name: letterUUID
+          in: path
+          description: 편지 UUID
+          required: true
+          example: 8892c3a8-eb66-4899-826c-d348c220dfdd
+      responses:
+        '200':
+          description: 로그인 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: string
+                        description: 작성 유저
+                      content:
+                        type: string
+                        description: 편지 내용
+                      like:
+                        type: number
+                        description: 공감 개수
+  /v1/letters/{letterUUID}/like:
+    post:
+      tags:
+        - LetterController
+      summary: 특정 편지 공감하기
+      parameters:
+        - name: Authorization
+          in: header
+          description: accessToken
+          required: true
+          example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6Ijc0M2Y0ZjJhLTA2NmMtNGE1ZS1hMGI2LWUyZjBjMzIxNDEyNSIsImlhdCI6MTY5NTI2NTk0MX0.aEHb1pbcn6_V-j5Wg0X62ZjlvqWQXP5ThvcYxAxnTRo
+        - name: letterUUID
+          in: path
+          description: 편지 UUID
+          required: true
+          example: 8892c3a8-eb66-4899-826c-d348c220dfdd
+      responses:
+        '200':
+          description: 특정 편지 공감 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: boolean
+                    description: 로그인 성공
+                    example: true

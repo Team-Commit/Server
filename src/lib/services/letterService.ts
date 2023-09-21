@@ -1,5 +1,5 @@
 import { v4 } from 'uuid';
-import { CreateLetterForm } from '../../types/types';
+import { CreateLetterForm, Letter } from '../../types/types';
 import { LetterModel } from '../../database/models/letter';
 import { UserModel } from '../../database/models/user';
 import { HistoryModel } from '../../database/models/history';
@@ -8,6 +8,7 @@ import {
   InternalServerError,
   BadRequestError,
 } from '../middelwares/error/error';
+import ModelConverter from '../../converter/modelConverter';
 
 class LetterService {
   private static instance: LetterService;
@@ -58,7 +59,7 @@ class LetterService {
     ]);
   }
 
-  async readLetter(userUUID: string, letterUUID: string): Promise<void> {
+  async readLetter(userUUID: string, letterUUID: string): Promise<Letter> {
     const letter = await LetterModel.findOne({ uuid: letterUUID });
 
     if (!letter) {
@@ -88,6 +89,8 @@ class LetterService {
       user.save(),
       new HistoryModel({ user: user, letter: letter }),
     ]);
+
+    return ModelConverter.toLetter(letter);
   }
 
   async likeLetter(userUUID: string, letterUUID: string): Promise<void> {

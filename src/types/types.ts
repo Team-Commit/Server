@@ -1,3 +1,10 @@
+type Letter = {
+  uuid: string;
+  user: string;
+  content: string;
+  like: number;
+};
+
 type CreateLetterForm = {
   content: string;
 };
@@ -5,4 +12,4 @@ type CreateLetterForm = {
 type SignInForm = {
   deviceId: string;
 };
-export type { CreateLetterForm, SignInForm };
+export type { Letter, CreateLetterForm, SignInForm };
