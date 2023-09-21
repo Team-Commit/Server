@@ -7,6 +7,7 @@ import CreateLetterDto from '../../types/requestTypes/createLetter.dto';
 import { BadRequestError } from '../middelwares/error/error';
 import ErrorCode from '../../types/ErrorTypes/errorCode';
 import checkAccessToken from '../middelwares/checkAccessToken';
+import GetLetterDto from '../../types/responseTypes/getLetter.dto';
 
 const router = Router();
 const letterService = LetterService.getInstance();
@@ -47,9 +48,11 @@ router.get(
         });
       }
 
-      await letterService.readLetter(req.userUUID, letterUUID);
+      const letter = await letterService.readLetter(req.userUUID, letterUUID);
 
-      res.json({ data: true });
+      const letterData = new GetLetterDto(letter);
+
+      res.json({ data: letterData });
     } catch (error) {
       next(error);
     }
