@@ -1,3 +1,41 @@
+type User = {
+  uuid: string;
+  deviceId: string;
+  nickname: string;
+  point: number;
+  send: number;
+  receive: number;
+  sound: boolean;
+  alarm: boolean;
+};
+
+type GetUserForm = {
+  nickname: string;
+  point: number;
+  send: number;
+  receive: number;
+  sound: boolean;
+  alarm: boolean;
+};
+
+type LoginUserForm = {
+  accessToken: string;
+  uuid: string;
+  deviceId: string;
+  nickname: string;
+  point: number;
+  send: number;
+  receive: number;
+  sound: boolean;
+  alarm: boolean;
+};
+
+type UpdateUserForm = {
+  nickname: string;
+  sound: boolean;
+  alarm: boolean;
+};
+
 type Letter = {
   uuid: string;
   user: string;
@@ -12,4 +50,12 @@ type CreateLetterForm = {
 type SignInForm = {
   deviceId: string;
 };
-export type { Letter, CreateLetterForm, SignInForm };
+export type {
+  User,
+  GetUserForm,
+  LoginUserForm,
+  UpdateUserForm,
+  Letter,
+  CreateLetterForm,
+  SignInForm,
+};

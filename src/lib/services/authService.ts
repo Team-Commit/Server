@@ -1,7 +1,10 @@
 import jwt from 'jsonwebtoken';
+import { v4 } from 'uuid';
 import SignInDto from '../../types/requestTypes/signIn.dto';
-import { UserModel } from '../../database/models/user';
+import { UserDAO, UserModel } from '../../database/models/user';
 import UserService from './userService';
+import ModelConverter from '../../converter/modelConverter';
+import { LoginUserForm } from '../../types/types';
 
 class AuthService {
   private static instance: AuthService;
@@ -16,19 +19,35 @@ class AuthService {
 	 * 로그인
 	 * @param signInDto
 	 */
-  async signIn(signInDto: SignInDto): Promise<string> {
+  async signIn(signInDto: SignInDto): Promise<LoginUserForm> {
     const { deviceId } = signInDto;
 
-    const user = await UserModel.findOne({ deviceId: deviceId });
+    let user: UserDAO | null;
 
-    let userUUID;
+    user = await UserModel.findOne({ deviceId: deviceId });
+
     if (!user) {
-      userUUID = await this.userService.createUser(deviceId);
-    } else {
-      userUUID = user.uuid;
+      const uuid = v4();
+
+      const randomNickname = this.createRandomNickname();
+
+      user = await new UserModel({
+        uuid: uuid,
+        deviceId: deviceId,
+        nickname: randomNickname,
+        point: 3,
+        send: 0,
+        receive: 0,
+        sound: true,
+        alarm: true,
+      }).save();
     }
 
-    return this.createTokens(userUUID);
+    const accessToken = this.createTokens(user.uuid);
+
+    const userData = ModelConverter.toUser(user);
+
+    return { accessToken: accessToken, ...userData };
   }
 
   /**
@@ -44,6 +63,10 @@ class AuthService {
       AuthService.instance = new AuthService();
     }
     return AuthService.instance;
+  }
+
+  createRandomNickname(): string {
+    return 'test';
   }
 }
 
