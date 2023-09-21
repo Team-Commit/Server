@@ -8,6 +8,8 @@ RUN npm install
 
 RUN npm run build
 
+RUN npm run api-docs
+
 # Get secret from git action
 ARG DATABASE_URL
 ARG DATABASE_USER
