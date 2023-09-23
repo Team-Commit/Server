@@ -25,10 +25,10 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/commit:latest
           build-args: |
-            DATABASE_URL=${{ secrets.DATABASE_URL }}
-            DATABASE_USER=${{ secrets.DATABASE_USER }}
-            DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
-            DATABASE_NAME=${{ secrets.DATABASE_NAME }}       
+            PROD_DATABASE_URL=${{ secrets.PROD_DATABASE_URL }}
+            PROD_DATABASE_USER=${{ secrets.PROD_DATABASE_USER }}
+            PROD_DATABASE_PASSWORD=${{ secrets.PROD_DATABASE_PASSWORD }}
+            PROD_DATABASE_NAME=${{ secrets.PROD_DATABASE_NAME }}       
             LOG_PATH=${{ secrets.LOG_PATH }}
 
   code-deploy:
