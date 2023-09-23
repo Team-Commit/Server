@@ -230,6 +230,77 @@ paths:
                       message:
                         type: string
                         example: message too long!
+  /v1/letters/random:
+    get:
+      tags:
+        - LetterController
+      summary: 랜덤 편지 읽기
+      parameters:
+        - in: header
+          name: Authorization
+          description: accessToken
+          required: true
+      responses:
+        '200':
+          description: 편지 읽기 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        type: string
+                        example: 착한사람
+                        description: 작성 유저
+                      content:
+                        type: string
+                        example: 오늘 행복한 하루 되세요~
+                        description: 편지 내용
+                      like:
+                        type: number
+                        example: 0
+                        description: 공감 개수
+        '400':
+          description: 포인트가 없어서 읽기 불가
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: BAD_REQUEST
+                  code:
+                    type: number
+                    example: 1202
+                  errors:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: Point not enough
+        '401':
+          description: 읽을 수 있는 편지가 없음
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: INTERNAL_SERVER_ERROR
+                  code:
+                    type: number
+                    example: 1205
+                  errors:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: Letter not left, you read all letter
   /v1/letters/{letterUUID}:
     get:
       tags:

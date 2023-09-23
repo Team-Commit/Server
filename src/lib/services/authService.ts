@@ -5,6 +5,7 @@ import { UserDAO, UserModel } from '../../database/models/user';
 import UserService from './userService';
 import ModelConverter from '../../converter/modelConverter';
 import { LoginUserForm } from '../../types/types';
+import { adjectives, nouns } from '../../util/random-word';
 
 class AuthService {
   private static instance: AuthService;
@@ -66,7 +67,12 @@ class AuthService {
   }
 
   createRandomNickname(): string {
-    return 'test';
+    const getRandomElement = (array: string[]) => array[Math.floor(Math.random() * array.length)];
+
+    const randomAdjective = getRandomElement(adjectives);
+    const randomNoun = getRandomElement(nouns);
+
+    return `${randomAdjective} ${randomNoun}`;
   }
 }
 
