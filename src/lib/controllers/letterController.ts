@@ -34,7 +34,24 @@ router.post(
   },
 );
 
-// 편지 읽기
+// 랜덤 편지 읽기
+router.get(
+  '/letters/random',
+  checkAccessToken,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const letter = await letterService.readRandomLetter(req.userUUID);
+
+      const letterData = new GetLetterDto(letter);
+
+      res.json({ data: letterData });
+    } catch (error) {
+      next(error);
+    }
+  },
+);
+
+// 특정 편지 읽기
 router.get(
   '/letters/:letterUUID',
   checkAccessToken,

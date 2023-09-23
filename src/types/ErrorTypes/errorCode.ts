@@ -16,6 +16,7 @@ enum ErrorCode {
   LETTER_POINT_NOT_ENOUGH = 1202, // 편지를 읽으려는데 포인트 부족
   LETTER_TOO_SHORT = 1203, // 메세지가 너무 짧음
   LETTER_TOO_LONG = 1204, // 메세지가 너무 김
+  LETTER_NOT_LEFT = 1205, // 존재하는 편지를 다 읽은 경우
 
   // API 요청 에러
   INVALID_QUERY = 2000, // 잘못된 쿼리 전송

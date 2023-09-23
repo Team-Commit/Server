@@ -56,7 +56,54 @@ class LetterService {
         read: 0,
       }).save(),
       user.save(),
+      new HistoryModel({ user: user.uuid, letter: uuid }).save(),
     ]);
+  }
+
+  async readRandomLetter(userUUID: string): Promise<Letter> {
+    const [user, histories] = await Promise.all([
+      UserModel.findOne({ uuid: userUUID }),
+      HistoryModel.find({ user: userUUID }),
+    ]);
+
+    // 유저가 존재하지 않는 경우
+    if (!user) {
+      throw new InternalServerError(ErrorCode.USER_NOT_FOUND, {
+        message: 'User not found',
+      });
+    }
+
+    const test = HistoryModel.find();
+
+    console.log(test);
+
+    // 포인트가 없는 경우
+    if (user.point < 1) {
+      throw new BadRequestError(ErrorCode.LETTER_POINT_NOT_ENOUGH, {
+        message: 'Point not enough',
+      });
+    }
+
+    const historyUUIDS = histories.map((history) => history.letter);
+
+    // 히스토리에 존재하지 않는 편지중 하나 가져오기
+    const letter = await LetterModel.findOne({ uuid: { $nin: historyUUIDS } });
+
+    // 존재하는 편지를 다 읽어서 읽을 수 있는 편지가 없는 경우
+    if (!letter) {
+      throw new InternalServerError(ErrorCode.LETTER_NOT_LEFT, {
+        message: 'Letter not left, you read all letter',
+      });
+    }
+
+    user.point -= 1;
+
+    await Promise.all([
+      user.save(),
+      new HistoryModel({ user: user.uuid, letter: letter.uuid }).save(),
+    ]);
+
+    return ModelConverter.toLetter(letter);
   }
 
   async readLetter(userUUID: string, letterUUID: string): Promise<Letter> {
@@ -87,7 +134,7 @@ class LetterService {
 
     await Promise.all([
       user.save(),
-      new HistoryModel({ user: user, letter: letter }),
+      new HistoryModel({ user: user.uuid, letter: letter.uuid }).save(),
     ]);
 
     return ModelConverter.toLetter(letter);
