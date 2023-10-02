@@ -69,6 +69,36 @@ paths:
                         type: boolean
                         description: 알람 수락 여부
                         example: true
+  /v1/auth/refresh:
+    post:
+      tags:
+        - AuthController
+      summary: 토큰 재발급
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - token
+              properties:
+                token:
+                  type: string
+                  description: 만료된 토큰
+                  example: aweofiawe-23
+      responses:
+        '200':
+          description: 토큰 재발급 성공
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: string
+                    description: accessToken
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVVVJRCI6Ijc0M2Y0ZjJhLTA2NmMtNGE1ZS1hMGI2LWUyZjBjMzIxNDEyNSIsImlhdCI6MTY5NTI2NTk0MX0.aEHb1pbcn6_V-j5Wg0X62ZjlvqWQXP5ThvcYxAxnTRo
+
   /v1/users/me:
     patch:
       tags:
