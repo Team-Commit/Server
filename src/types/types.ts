@@ -50,6 +50,11 @@ type CreateLetterForm = {
 type SignInForm = {
   deviceId: string;
 };
+
+type RefreshTokenForm = {
+  token: string;
+};
+
 export type {
   User,
   GetUserForm,
@@ -58,4 +63,5 @@ export type {
   Letter,
   CreateLetterForm,
   SignInForm,
+  RefreshTokenForm,
 };
