@@ -1,11 +1,14 @@
 import jwt from 'jsonwebtoken';
 import { v4 } from 'uuid';
+import jwt_decode from 'jwt-decode';
 import SignInDto from '../../types/requestTypes/signIn.dto';
 import { UserDAO, UserModel } from '../../database/models/user';
 import UserService from './userService';
 import ModelConverter from '../../converter/modelConverter';
-import { LoginUserForm } from '../../types/types';
+import { LoginUserForm, RefreshTokenForm } from '../../types/types';
 import { adjectives, nouns } from '../../util/random-word';
+import BadRequestError from '../middelwares/error/badRequestError';
+import ErrorCode from '../../types/ErrorTypes/errorCode';
 
 class AuthService {
   private static instance: AuthService;
@@ -52,11 +55,31 @@ class AuthService {
   }
 
   /**
+   * accessToken 재발급
+   * @param resfreshTokenForm
+   */
+  refreshToken(resfreshTokenForm: RefreshTokenForm): string {
+    const { token } = resfreshTokenForm;
+
+    const decoded = jwt_decode(token) as { userUUID: string };
+
+    if (!decoded.userUUID) {
+      throw new BadRequestError(ErrorCode.INVALID_ACCESS_TOKEN, {
+        data: 'Invalid access token',
+      });
+    }
+
+    return this.createTokens(decoded.userUUID);
+  }
+
+  /**
 	 * userUUID로 accessToken 생성
 	 * @param userUUID
 	 */
   createTokens(userUUID: string): string {
-    return jwt.sign({ userUUID: userUUID }, 'any');
+    return jwt.sign({ userUUID: userUUID }, 'any', {
+      expiresIn: 600,
+    });
   }
 
   public static getInstance(): AuthService {
